@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const screen = document.getElementById('screen');
     let firstOperand = '';
     let secondOperand = '';
-    let operator = '';
+    let operator = null;
 
     document.querySelectorAll('button').forEach(button => {
         button.addEventListener('click', () => {
@@ -12,6 +12,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 handleOperator(button.dataset.operator)
             } else if (button.dataset.equals) {
                 calculate()
+            } else if (button.dataset.action === 'reset') {
+                resetCalculator()
             }
             updatedScreen()
         })
@@ -65,5 +67,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     function updatedScreen() {
         screen.textContent = secondOperand || firstOperand || '0'
+    }
+
+    function resetCalculator() {
+        firstOperand = '';
+        secondOperand = '';
+        operator = null;
+        updatedScreen();
     }
 })
