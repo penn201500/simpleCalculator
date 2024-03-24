@@ -1,7 +1,8 @@
 # simpleCalculator
 
 This is a very simple calculator. It's intuitive to use, as explained below.
-![simpleCalculator](https://easyimage.netmark.top/i/2024/03/09/092719.gif
+
+![simpleCalculator](https://easyimage.netmark.top/i/2024/03/24/224346.gif
 )
 
 ## Todos
