@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let firstOperand = ""
     let secondOperand = ""
     let operator = null
+    let resultCalculated = false // Flag to check if the result was just calculated
 
     document.querySelectorAll("button").forEach(button => {
         button.addEventListener("click", () => {
@@ -12,6 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 handleOperator(button.dataset.operator)
             } else if (button.dataset.equals) {
                 calculate()
+                resultCalculated = true // Set the flag after calculation
             } else if (button.dataset.action === "reset") {
                 resetCalculator()
             }
@@ -20,7 +22,13 @@ document.addEventListener("DOMContentLoaded", function () {
     })
 
     function handleNumber(number) {
-        if (operator) {
+        if (resultCalculated) {
+            // If a result was just calculated and a number is pressed, start a new operation
+            firstOperand = number
+            secondOperand = ""
+            operator = null
+            resultCalculated = false
+        } else if (operator) {
             secondOperand += number
         } else {
             firstOperand += number
@@ -32,13 +40,15 @@ document.addEventListener("DOMContentLoaded", function () {
             calculate()
         }
         operator = operatorSymbol
+        resultCalculated = false // Reset the flag as we're continuing with another operation
     }
 
     function calculate() {
         if (operator === null || secondOperand === "") return
-        let result = ""
         const first = parseFloat(firstOperand)
         const second = parseFloat(secondOperand)
+        let result
+
         switch (operator) {
             case "+":
                 result = first + second
@@ -50,17 +60,22 @@ document.addEventListener("DOMContentLoaded", function () {
                 result = first * second
                 break
             case "/":
-                console.log("first / second", first, second, result)
-                if (second === 0) result = "Error"
-                else result = first / second
+                if (second === 0) {
+                    result = "Error"
+                } else {
+                    result = first / second
+                }
                 break
             default:
-                return
+                return // Exit if the operator is not recognized
         }
+
         screen.textContent = result
-        firstOperand = result // consecutive operations
-        secondOperand = "" // reset secondOperand
+        firstOperand = result.toString() // Use result for next operation
+        secondOperand = "" // Reset secondOperand
+        operator = null // Reset operator for next potential operation
     }
+
     function updatedScreen() {
         screen.textContent = secondOperand || firstOperand || "0"
     }
@@ -69,6 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
         firstOperand = ""
         secondOperand = ""
         operator = null
+        resultCalculated = false
         updatedScreen()
     }
 })
